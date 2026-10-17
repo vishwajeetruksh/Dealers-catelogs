@@ -698,7 +698,8 @@ main { min-width: 0; padding: 24px; }
         </div>
         <div class="product-body">
           <div class="product-ref">${escapeHTML(p.ref)}</div>
-          <h3>${escapeHTML(p.name)}</h3>
+          <div>${escapeHTML(p.name)}</div>
+          <div>${escapeHTML(p.description)}</div>
           <div class="price-line">₹${money(p.price)}</div>
         </div>
       </article>`;
@@ -820,6 +821,7 @@ main { min-width: 0; padding: 24px; }
     $("productName").value = product.name || "";
     $("productPrice").value = product.price ?? "";
     $("productImage").value = "";
+    $("productDescription").value = product.description || "";
     draftImage = product.image || "";
 
     const productIndex = state.products.findIndex(p => p.id === id);
@@ -834,6 +836,7 @@ main { min-width: 0; padding: 24px; }
     $("productName").value = "";
     $("productPrice").value = "";
     $("productImage").value = "";
+    $("productDescription").value = "";
     renderProductList();
   }
 
@@ -846,11 +849,12 @@ main { min-width: 0; padding: 24px; }
   async function saveProduct() {
     const ref = $("productRef").value.trim();
     const name = $("productName").value.trim();
+    const description = $("productDescription").value.trim();
     const priceText = $("productPrice").value;
     const price = Number(priceText);
 
-    if (!ref || !name || priceText === "" || !Number.isFinite(price) || price < 0) {
-      notify("Enter a reference, product name and valid price.");
+    if (!ref || !name || !description || priceText === "" || !Number.isFinite(price) || price < 0) {
+      notify("Enter a reference, product name, description and valid price.");
       return;
     }
 
@@ -862,7 +866,7 @@ main { min-width: 0; padding: 24px; }
 
       const product = {
         id: selectedId || uid(),
-        ref, name, price, image
+        ref, name, price, image, description
       };
 
       if (selectedId) {
@@ -948,8 +952,9 @@ main { min-width: 0; padding: 24px; }
           id: p.id || uid(),
           ref: String(p.ref || ""),
           name: String(p.name || ""),
+          description: String(p.description || ""),
           price: Number(p.price || 0),
-          image: p.image || ""
+          image: p.image || "",
         })),
         cover: parsed.cover || "",
         intro: parsed.intro || "",
