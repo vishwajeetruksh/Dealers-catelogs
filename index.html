@@ -1,0 +1,1053 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ruksh Gadgets | Dealer Catalogue Studio</title>
+
+<style>
+:root {
+  --blue: #8ec5f4;
+  --blue-dark: #2468a8;
+  --blue-pale: #edf7ff;
+  --ink: #18334c;
+  --muted: #718096;
+  --line: #e2eaf2;
+  --orange: #ef9b51;
+  --bg: #f3f6fa;
+  --white: #fff;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--bg);
+  font: 14px/1.5 Inter, "Segoe UI", Arial, sans-serif;
+}
+
+button, input, textarea, select { font: inherit; }
+button { cursor: pointer; }
+
+button:disabled { opacity: .4; cursor: not-allowed; }
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 14px 24px;
+  background: #fff;
+  border-bottom: 1px solid var(--line);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.brand img {
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+}
+
+.brand h1 { font-size: 16px; margin: 0; }
+.brand p { color: var(--muted); font-size: 12px; margin: 2px 0 0; }
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.btn {
+  padding: 9px 13px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: #fff;
+  color: var(--ink);
+  font-weight: 600;
+  transition: .15s ease;
+}
+
+.btn:hover { border-color: var(--blue-dark); }
+.btn.primary { background: var(--blue-dark); color: white; border-color: var(--blue-dark); }
+.btn.soft { background: var(--blue-pale); color: var(--blue-dark); }
+.btn.danger { color: #b83232; }
+
+.layout {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  min-height: calc(100vh - 75px);
+}
+
+.sidebar {
+  padding: 20px;
+  background: white;
+  border-right: 1px solid var(--line);
+  overflow: auto;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.section-title h2 { font-size: 14px; margin: 0; }
+
+.muted { color: var(--muted); font-size: 12px; }
+
+.field { display: grid; gap: 6px; margin-bottom: 13px; }
+
+.field label {
+  color: #51677c;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .04em;
+}
+
+.field input, .field textarea, .field select {
+  width: 100%;
+  min-width: 0;
+  padding: 10px 11px;
+  border: 1px solid #dce6f0;
+  border-radius: 9px;
+  outline: none;
+  background: #fbfdff;
+  color: var(--ink);
+}
+
+.field input:focus, .field textarea:focus {
+  border-color: var(--blue-dark);
+}
+
+.field input[type="file"] { font-size: 12px; padding: 8px; }
+
+hr { border: 0; border-top: 1px solid var(--line); margin: 20px 0; }
+
+.product-list { display: grid; gap: 8px; margin-top: 16px; }
+
+.product-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px;
+  text-align: left;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: white;
+}
+
+.product-row.active { border-color: var(--blue-dark); background: var(--blue-pale); }
+
+.thumb {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  border-radius: 7px;
+  object-fit: contain;
+  background: #f4f7fb;
+}
+
+.product-info { flex: 1; min-width: 0; }
+
+.product-info strong {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+}
+
+.product-info span { color: var(--muted); font-size: 11px; }
+
+main { min-width: 0; padding: 24px; }
+
+.workspace-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.workspace-head h2 { margin: 0; font-size: 21px; letter-spacing: -.4px; }
+.workspace-head p { margin: 4px 0 0; color: var(--muted); }
+
+.workspace {
+  padding: 20px;
+  min-height: 600px;
+  border-radius: 14px;
+  background: #e7edf4;
+  overflow: auto;
+}
+
+.page-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.page-nav strong { font-size: 12px; }
+
+.page {
+  position: relative;
+  width: min(100%, 794px);
+  min-width: 280px;
+  aspect-ratio: 210 / 297;
+  margin: 0 auto 24px;
+  padding: 7.5%;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 8px 30px #193a581c;
+}
+
+.page-cover {
+  padding: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+}
+
+.page-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+}
+
+.page-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.page-head strong { font-size: 14px; letter-spacing: .03em; }
+.page-head span { color: var(--muted); font-size: 9px; text-align: right; }
+
+.orange-rule { height: 3px; margin: 12px 0 18px; background: var(--orange); }
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 13px;
+}
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid #e5edf5;
+  border-radius: 7px;
+  background: white;
+}
+
+.product-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: clamp(80px, 13vw, 150px);
+  padding: 8px;
+  background: #fbfdff;
+}
+
+.product-image img { max-width: 100%; max-height: 100%; object-fit: contain; }
+
+.no-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #a6b4c2;
+  font-size: 10px;
+  text-align: center;
+}
+
+.product-body { padding: 8px; }
+
+.product-ref {
+  color: var(--blue-dark);
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.product-body h3 {
+  min-height: 2.6em;
+  margin: 4px 0 8px;
+  font-size: 11px;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.price-line {
+  margin-top: auto;
+  padding-top: 7px;
+  border-top: 2px solid var(--orange);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.page-foot {
+  position: absolute;
+  left: 7.5%;
+  right: 7.5%;
+  bottom: 3.5%;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 7px;
+  border-top: 1px solid var(--line);
+  color: #8796a6;
+  font-size: 8px;
+}
+
+.page-title {
+  margin: 18px 0 5px;
+  font-size: 19px;
+}
+
+.page-subtitle { color: var(--muted); font-size: 11px; }
+
+.toast {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 30;
+  max-width: min(400px, calc(100vw - 40px));
+  padding: 12px 16px;
+  color: white;
+  background: #18334c;
+  border-radius: 10px;
+  box-shadow: 0 8px 30px #0002;
+}
+
+.hidden { display: none !important; }
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { border-right: 0; border-bottom: 1px solid var(--line); }
+  main { padding: 14px; }
+  .topbar { padding: 12px 14px; align-items: flex-start; }
+  .workspace { padding: 10px; }
+}
+
+@media print {
+  body { background: white; }
+  .topbar, .sidebar, .workspace-head, .page-nav, .no-print, .toast {
+    display: none !important;
+  }
+  .layout, main, .workspace {
+    display: block;
+    margin: 0;
+    padding: 0;
+    min-height: 0;
+    overflow: visible;
+    background: white;
+  }
+  .page {
+    display: block !important;
+    width: 210mm;
+    height: 297mm;
+    min-width: 0;
+    max-width: none;
+    aspect-ratio: auto;
+    margin: 0;
+    padding: 15mm;
+    overflow: hidden;
+    box-shadow: none;
+    page-break-after: always;
+    break-after: page;
+  }
+  .page:last-child { page-break-after: auto; break-after: auto; }
+  .page-cover { padding: 0; }
+  .page-cover img { width: 100%; height: 100%; }
+  .product-image { height: 42mm; }
+  .product-grid { gap: 5mm; }
+  .product-card { break-inside: avoid; }
+  .page-foot { left: 15mm; right: 15mm; bottom: 9mm; }
+  @page { size: A4 portrait; margin: 0; }
+}
+</style>
+</head>
+
+<body>
+<header class="topbar">
+  <div class="brand">
+    <img id="brandLogo" alt="Ruksh Gadgets logo" src="assets/ruksh-logo.png"
+         onerror="this.style.display='none'">
+    <div>
+      <h1>Ruksh Gadgets</h1>
+      <p>Dealer Catalogue Studio</p>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn" id="backupBtn">Export data</button>
+    <button class="btn" id="importBtn">Import data</button>
+    <button class="btn soft" id="addTopBtn">＋ Add product</button>
+    <button class="btn primary" id="pdfBtn">Export catalogue PDF ↗</button>
+    <input id="importFile" type="file" accept=".json,application/json" hidden>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="section-title">
+      <h2>Catalogue settings</h2>
+      <span class="muted">A4 portrait</span>
+    </div>
+
+    <div class="field">
+      <label>ORIGINAL COVER PAGE IMAGE</label>
+      <input type="file" id="coverUpload" accept="image/*">
+      <span class="muted">Upload a full-page image of PDF page 1.</span>
+    </div>
+
+    <div class="field">
+      <label>ORIGINAL INTRODUCTION PAGE IMAGE</label>
+      <input type="file" id="introUpload" accept="image/*">
+      <span class="muted">Upload a full-page image of PDF page 2.</span>
+    </div>
+
+    <div class="field">
+      <label>BRAND LOGO (OPTIONAL)</label>
+      <input type="file" id="logoUpload" accept="image/*">
+    </div>
+
+    <hr>
+
+    <div class="section-title">
+      <h2>Product editor</h2>
+      <span class="muted" id="productCount">0 products</span>
+    </div>
+
+    <div class="field">
+      <label>SEARCH PRODUCTS</label>
+      <input id="search" placeholder="Search name or reference...">
+    </div>
+
+    <div class="field">
+      <label>PRODUCT REFERENCE</label>
+      <input id="productRef" placeholder="RG-001">
+    </div>
+
+    <div class="field">
+      <label>PRODUCT NAME</label>
+      <input id="productName" placeholder="Enter product name">
+    </div>
+
+    <div class="field">
+      <label>DEALER PRICE (₹)</label>
+      <input id="productPrice" type="number" min="0" step="0.01" placeholder="0.00">
+    </div>
+
+    <div class="field">
+      <label>PRODUCT IMAGE</label>
+      <input id="productImage" type="file" accept="image/*">
+      <span class="muted">Upload the actual product image.</span>
+    </div>
+
+    <div class="actions">
+      <button class="btn primary" id="saveBtn">Save product</button>
+      <button class="btn" id="clearBtn">New / Clear</button>
+    </div>
+
+    <div class="actions" style="margin-top:8px">
+      <button class="btn" id="upBtn">↑ Move up</button>
+      <button class="btn" id="downBtn">↓ Move down</button>
+      <button class="btn danger" id="deleteBtn">Delete</button>
+    </div>
+
+    <div class="product-list" id="productList"></div>
+
+    <hr>
+
+    <button class="btn" id="clearProductsBtn" style="width:100%">Clear all products</button>
+    <p class="muted">
+      This version stores data in this browser. Export a JSON backup regularly.
+      Large image collections may exceed browser storage limits.
+    </p>
+  </aside>
+
+  <main>
+    <div class="workspace-head">
+      <div>
+        <h2>Catalogue preview</h2>
+        <p>Original opening pages · Editable product pages · Six products per A4 page</p>
+      </div>
+      <div class="actions">
+        <button class="btn" id="prevBtn">← Previous</button>
+        <button class="btn" id="nextBtn">Next →</button>
+      </div>
+    </div>
+
+    <div class="workspace">
+      <div class="page-nav">
+        <button class="btn" id="firstBtn">First page</button>
+        <strong id="pageStatus">Cover page</strong>
+        <button class="btn" id="lastBtn">Last page</button>
+      </div>
+      <div id="previewPages"></div>
+    </div>
+  </main>
+</div>
+
+<div id="toast" class="toast hidden" role="status"></div>
+
+<script>
+(() => {
+  "use strict";
+
+  const $ = id => document.getElementById(id);
+  const PAGE_SIZE = 6;
+  const DB_KEY = "ruksh-catalogue-studio-v1";
+
+  let state = {
+    products: [],
+    cover: "",
+    intro: "",
+    logo: ""
+  };
+
+  let selectedId = null;
+  let pageIndex = 0;
+  let draftImage = "";
+  let toastTimer;
+
+  function uid() {
+    return crypto.randomUUID
+      ? crypto.randomUUID()
+      : "p-" + Date.now() + "-" + Math.random().toString(36).slice(2);
+  }
+
+  function escapeHTML(value = "") {
+    return String(value).replace(/[&<>"']/g, c => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    })[c]);
+  }
+
+  function money(value) {
+    return Number(value || 0).toLocaleString("en-IN", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  }
+
+  function notify(message) {
+    $("toast").textContent = message;
+    $("toast").classList.remove("hidden");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => $("toast").classList.add("hidden"), 2800);
+  }
+
+  function persist() {
+    try {
+      localStorage.setItem(DB_KEY, JSON.stringify(state));
+      return true;
+    } catch (error) {
+      notify("Browser storage is full. Export data or use smaller images.");
+      return false;
+    }
+  }
+
+  function load() {
+    try {
+      const saved = localStorage.getItem(DB_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        state = {
+          products: Array.isArray(parsed.products) ? parsed.products : [],
+          cover: parsed.cover || "",
+          intro: parsed.intro || "",
+          logo: parsed.logo || ""
+        };
+      }
+    } catch (error) {
+      notify("Saved data could not be read. Import a backup if available.");
+    }
+
+    if (state.logo) $("brandLogo").src = state.logo;
+  }
+
+  function readImage(file) {
+    return new Promise((resolve, reject) => {
+      if (!file) return resolve("");
+      if (!file.type.startsWith("image/")) {
+        return reject(new Error("Please select an image file."));
+      }
+
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = () => reject(new Error("Could not read this image."));
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function imageFromInput(inputId) {
+    const file = $(inputId).files[0];
+    if (!file) return "";
+    return readImage(file);
+  }
+
+  function totalPages() {
+    return 2 + Math.max(1, Math.ceil(state.products.length / PAGE_SIZE));
+  }
+
+  function pageProducts(index) {
+    const start = (index - 2) * PAGE_SIZE;
+    return state.products.slice(start, start + PAGE_SIZE);
+  }
+
+  function filteredProducts() {
+    const query = $("search").value.trim().toLowerCase();
+    if (!query) return state.products;
+
+    return state.products.filter(p =>
+      `${p.ref} ${p.name}`.toLowerCase().includes(query)
+    );
+  }
+
+  function renderProductList() {
+    const products = filteredProducts();
+    $("productCount").textContent = `${state.products.length} products`;
+
+    if (!products.length) {
+      $("productList").innerHTML =
+        '<div class="muted" style="padding:12px 0">No matching products. Add a product to begin.</div>';
+      return;
+    }
+
+    $("productList").innerHTML = products.map(p => `
+      <button class="product-row ${p.id === selectedId ? "active" : ""}"
+              data-product-id="${escapeHTML(p.id)}">
+        <img class="thumb" src="${p.image || ""}" alt=""
+             onerror="this.style.visibility='hidden'">
+        <span class="product-info">
+          <strong>${escapeHTML(p.name || "Untitled product")}</strong>
+          <span>${escapeHTML(p.ref)} · ₹${money(p.price)}</span>
+        </span>
+      </button>
+    `).join("");
+
+    $("productList").querySelectorAll("[data-product-id]").forEach(button => {
+      button.addEventListener("click", () => selectProduct(button.dataset.productId));
+    });
+  }
+
+  function cardHTML(p) {
+    return `
+      <article class="product-card">
+        <div class="product-image">
+          ${p.image
+            ? `<img src="${p.image}" alt="${escapeHTML(p.name)}">`
+            : `<div class="no-image">Add product image</div>`}
+        </div>
+        <div class="product-body">
+          <div class="product-ref">${escapeHTML(p.ref)}</div>
+          <h3>${escapeHTML(p.name)}</h3>
+          <div class="price-line">₹${money(p.price)}</div>
+        </div>
+      </article>`;
+  }
+
+  function pageFooter(pageNumber) {
+    return `
+      <div class="page-foot">
+        <span>Ruksh Gadgets · Dealers Pricing Catalogue</span>
+        <span>${pageNumber}</span>
+      </div>`;
+  }
+
+  function coverHTML() {
+    if (state.cover) {
+      return `<section class="page page-cover" data-page-index="0">
+        <img src="${state.cover}" alt="Original catalogue cover page">
+      </section>`;
+    }
+
+    return `<section class="page" data-page-index="0">
+      <div style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:10%;background:linear-gradient(145deg,#fff,#edf7ff)">
+        ${state.logo ? `<img src="${state.logo}" style="width:38%;max-height:24%;object-fit:contain" alt="Ruksh Gadgets">` : ""}
+        <div style="height:4px;width:65%;background:#8ec5f4;margin:30px 0"></div>
+        <div style="font-size:clamp(18px,3vw,34px);font-weight:800;letter-spacing:.04em">RUKSH GADGETS</div>
+        <h2 style="font-size:clamp(15px,2vw,24px);margin:12px 0">DEALERS PRICING CATALOGUE</h2>
+        <p class="muted">Upload your original PDF cover image to preserve it exactly.</p>
+      </div>
+    </section>`;
+  }
+
+  function introHTML() {
+    if (state.intro) {
+      return `<section class="page page-cover" data-page-index="1">
+        <img src="${state.intro}" alt="Original catalogue introduction page">
+      </section>`;
+    }
+
+    return `<section class="page" data-page-index="1">
+      <div class="page-head"><strong>RUKSH GADGETS</strong><span>WELCOME</span></div>
+      <div class="orange-rule"></div>
+      <div style="padding:12% 5%">
+        <h2 class="page-title">Welcome to Ruksh Gadgets</h2>
+        <p class="page-subtitle">Dealers Pricing Catalogue</p>
+        <p style="margin-top:30px;line-height:2">
+          Discover our product range for your business.
+          Upload the original introduction page image to preserve your PDF design exactly.
+        </p>
+      </div>
+      ${pageFooter(2)}
+    </section>`;
+  }
+
+  function productPageHTML(index) {
+    const items = pageProducts(index);
+    const totalProductPages = Math.max(1, Math.ceil(state.products.length / PAGE_SIZE));
+
+    return `
+      <section class="page" data-page-index="${index}">
+        <div class="page-head">
+          <strong>RUKSH GADGETS</strong>
+          <span>DEALERS PRICING CATALOGUE</span>
+        </div>
+        <div class="orange-rule"></div>
+        <div class="product-grid">
+          ${items.map(cardHTML).join("")}
+        </div>
+        ${items.length === 0 ? `
+          <div style="margin-top:60px;text-align:center;color:#8a9bab">
+            <h3>No products added yet</h3>
+            <p>Add products using the editor.</p>
+          </div>` : ""}
+        ${pageFooter(index + 1)}
+      </section>`;
+  }
+
+  function renderPages() {
+    const count = totalPages();
+    pageIndex = Math.max(0, Math.min(pageIndex, count - 1));
+
+    const html = [
+      coverHTML(),
+      introHTML(),
+      ...Array.from({ length: count - 2 }, (_, i) => productPageHTML(i + 2))
+    ].join("");
+
+    $("previewPages").innerHTML = html;
+
+    const names = ["Cover page", "Introduction page"];
+    const label = names[pageIndex] ||
+      `Product page ${pageIndex - 1} of ${count - 2}`;
+
+    $("pageStatus").textContent = label;
+    $("prevBtn").disabled = pageIndex === 0;
+    $("nextBtn").disabled = pageIndex >= count - 1;
+    $("firstBtn").disabled = pageIndex === 0;
+    $("lastBtn").disabled = pageIndex >= count - 1;
+
+    // In editor mode, display only the currently selected A4 page.
+    document.querySelectorAll("#previewPages .page").forEach(page => {
+      page.classList.toggle(
+        "hidden",
+        Number(page.dataset.pageIndex) !== pageIndex
+      );
+    });
+  }
+
+  function render() {
+    renderProductList();
+    renderPages();
+  }
+
+  function selectProduct(id) {
+    const product = state.products.find(p => p.id === id);
+    if (!product) return;
+
+    selectedId = id;
+    $("productRef").value = product.ref || "";
+    $("productName").value = product.name || "";
+    $("productPrice").value = product.price ?? "";
+    $("productImage").value = "";
+    draftImage = product.image || "";
+
+    const productIndex = state.products.findIndex(p => p.id === id);
+    pageIndex = 2 + Math.floor(productIndex / PAGE_SIZE);
+    render();
+  }
+
+  function clearForm() {
+    selectedId = null;
+    draftImage = "";
+    $("productRef").value = "";
+    $("productName").value = "";
+    $("productPrice").value = "";
+    $("productImage").value = "";
+    renderProductList();
+  }
+
+  function nextReference() {
+    const numbers = state.products
+      .map(p => Number(String(p.ref).match(/(\d+)$/)?.[1] || 0));
+    return `RG-${String(Math.max(0, ...numbers) + 1).padStart(3, "0")}`;
+  }
+
+  async function saveProduct() {
+    const ref = $("productRef").value.trim();
+    const name = $("productName").value.trim();
+    const priceText = $("productPrice").value;
+    const price = Number(priceText);
+
+    if (!ref || !name || priceText === "" || !Number.isFinite(price) || price < 0) {
+      notify("Enter a reference, product name and valid price.");
+      return;
+    }
+
+    const existing = state.products.find(p => p.id === selectedId);
+
+    try {
+      const uploadedImage = await imageFromInput("productImage");
+      const image = uploadedImage || draftImage || existing?.image || "";
+
+      const product = {
+        id: selectedId || uid(),
+        ref, name, price, image
+      };
+
+      if (selectedId) {
+        state.products = state.products.map(p =>
+          p.id === selectedId ? product : p
+        );
+      } else {
+        state.products.push(product);
+        selectedId = product.id;
+      }
+
+      persist();
+      const index = state.products.findIndex(p => p.id === selectedId);
+      pageIndex = 2 + Math.floor(index / PAGE_SIZE);
+      draftImage = image;
+      render();
+      notify("Product saved.");
+    } catch (error) {
+      notify(error.message || "Could not save product.");
+    }
+  }
+
+  function deleteProduct() {
+    if (!selectedId) {
+      notify("Select a product first.");
+      return;
+    }
+
+    if (!confirm("Delete this product?")) return;
+
+    const index = state.products.findIndex(p => p.id === selectedId);
+    state.products.splice(index, 1);
+    persist();
+    clearForm();
+
+    pageIndex = Math.min(pageIndex, totalPages() - 1);
+    render();
+    notify("Product deleted.");
+  }
+
+  function moveProduct(direction) {
+    const index = state.products.findIndex(p => p.id === selectedId);
+    const target = index + direction;
+
+    if (index < 0 || target < 0 || target >= state.products.length) return;
+
+    [state.products[index], state.products[target]] =
+      [state.products[target], state.products[index]];
+
+    persist();
+    pageIndex = 2 + Math.floor(target / PAGE_SIZE);
+    render();
+  }
+
+  function exportJSON() {
+    const blob = new Blob([JSON.stringify(state, null, 2)], {
+      type: "application/json"
+    });
+    downloadBlob(blob, "ruksh-gadgets-catalogue-data.json");
+  }
+
+  function downloadBlob(blob, filename) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  async function importJSON(file) {
+    if (!file) return;
+
+    try {
+      const parsed = JSON.parse(await file.text());
+
+      if (!parsed || !Array.isArray(parsed.products)) {
+        throw new Error("This file is not a valid catalogue backup.");
+      }
+
+      state = {
+        products: parsed.products.map(p => ({
+          id: p.id || uid(),
+          ref: String(p.ref || ""),
+          name: String(p.name || ""),
+          price: Number(p.price || 0),
+          image: p.image || ""
+        })),
+        cover: parsed.cover || "",
+        intro: parsed.intro || "",
+        logo: parsed.logo || ""
+      };
+
+      selectedId = null;
+      pageIndex = 0;
+      persist();
+
+      if (state.logo) $("brandLogo").src = state.logo;
+      else $("brandLogo").src = "assets/ruksh-logo.png";
+
+      clearForm();
+      render();
+      notify("Catalogue backup imported.");
+    } catch (error) {
+      notify(error.message || "Could not import this file.");
+    }
+  }
+
+  async function uploadPageImage(inputId, key) {
+    try {
+      const data = await imageFromInput(inputId);
+      if (!data) return;
+
+      state[key] = data;
+      persist();
+      pageIndex = key === "cover" ? 0 : 1;
+      render();
+      notify("Page image updated.");
+    } catch (error) {
+      notify(error.message);
+    }
+  }
+
+  async function uploadLogo() {
+    try {
+      const data = await imageFromInput("logoUpload");
+      if (!data) return;
+
+      state.logo = data;
+      $("brandLogo").src = data;
+      $("brandLogo").style.display = "";
+      persist();
+      renderPages();
+      notify("Logo updated.");
+    } catch (error) {
+      notify(error.message);
+    }
+  }
+
+  $("addTopBtn").addEventListener("click", () => {
+    clearForm();
+    $("productRef").value = nextReference();
+    $("productName").focus();
+    pageIndex = totalPages() - 1;
+    renderPages();
+  });
+
+  $("saveBtn").addEventListener("click", saveProduct);
+  $("clearBtn").addEventListener("click", clearForm);
+  $("deleteBtn").addEventListener("click", deleteProduct);
+  $("upBtn").addEventListener("click", () => moveProduct(-1));
+  $("downBtn").addEventListener("click", () => moveProduct(1));
+  $("search").addEventListener("input", renderProductList);
+
+  $("prevBtn").addEventListener("click", () => {
+    pageIndex--;
+    renderPages();
+  });
+
+  $("nextBtn").addEventListener("click", () => {
+    pageIndex++;
+    renderPages();
+  });
+
+  $("firstBtn").addEventListener("click", () => {
+    pageIndex = 0;
+    renderPages();
+  });
+
+  $("lastBtn").addEventListener("click", () => {
+    pageIndex = totalPages() - 1;
+    renderPages();
+  });
+
+  $("backupBtn").addEventListener("click", exportJSON);
+
+  $("importBtn").addEventListener("click", () => $("importFile").click());
+  $("importFile").addEventListener("change", async event => {
+    await importJSON(event.target.files[0]);
+    event.target.value = "";
+  });
+
+  $("coverUpload").addEventListener("change", () =>
+    uploadPageImage("coverUpload", "cover"));
+
+  $("introUpload").addEventListener("change", () =>
+    uploadPageImage("introUpload", "intro"));
+
+  $("logoUpload").addEventListener("change", uploadLogo);
+
+  $("pdfBtn").addEventListener("click", () => {
+    // Reveal every page for printing. The print stylesheet formats each
+    // page as A4 and inserts page breaks between them.
+    document.querySelectorAll("#previewPages .page").forEach(page => {
+      page.classList.remove("hidden");
+    });
+
+    window.print();
+
+    // Restore the editor's single-page preview after the print dialog closes.
+    setTimeout(renderPages, 500);
+  });
+
+  $("clearProductsBtn").addEventListener("click", () => {
+    if (!confirm("Delete all products? Export a backup first if needed.")) return;
+
+    state.products = [];
+    selectedId = null;
+    pageIndex = 0;
+    persist();
+    clearForm();
+    render();
+    notify("All products cleared.");
+  });
+
+  load();
+  render();
+})();
+</script>
+</body>
+</html>
